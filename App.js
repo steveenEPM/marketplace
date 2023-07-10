@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+
+import Index from "./src/routes";
+import Mobile from "./src/context/mobile";
+import Authen from "./src/routes/authen";
+import { mobileContext } from "./src/context/mobile";
+
+
 
 export default function App() {
+
+  /**Estado de autenticacion */
+  const [isAuthen, setIsAuthe] = useState(false)
+
+  useEffect(() => {
+    AsyncStorage.removeItem("elemetCart");
+  }, [])
+
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Mobile isAuthen={isAuthen} setIsAuthe={setIsAuthe}>
+      <NavigationContainer>
+        {
+          isAuthen ? <Index /> : <Authen />
+        }
+      </NavigationContainer>
+    </Mobile>
+
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
